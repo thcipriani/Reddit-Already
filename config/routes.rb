@@ -1,7 +1,12 @@
 Redditalready::Application.routes.draw do
   devise_for :users
 
-  resources :links
+	resources :links do
+		member do
+			put 'upvote'
+			put 'downvote'
+		end
+	end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

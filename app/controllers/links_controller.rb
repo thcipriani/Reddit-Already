@@ -82,4 +82,43 @@ before_filter :authenticate_user!, :except => [:index, :show]
       format.xml  { head :ok }
     end
   end
+
+	#Vote Up a link
+	def upvote
+    @link = Link.find(params[:id])
+    @user = User.find(current_user.id)
+    @vote = @link.votes.create(params[:link])
+    @vote.user = @user
+    @vote.link = @link
+    @vote.score = 1
+    
+    respond_to do |format|
+      if @vote.save!
+        format.html { redirect_to(links_path, :notice => 'Your vote has been cast.') }
+      else
+        format.html { redirect_to(links_path, :notice => 'Error recording vote, please try again later.') }
+      end
+      
+    end
+  end
+
+	#Vote down a link
+  def downvote
+    @link = Link.find(params[:id])
+    @user = User.find(current_user.id)
+    @vote = @link.votes.build(params[:link])
+    @vote.user = @user
+    @vote.link = @link
+    @vote.score = -1
+        
+    respond_to do |format|
+      if @vote.save!
+        format.html { redirect_to(links_path, :notice => 'Your vote has been cast.') }
+      else
+        format.html { redirect_to(links_path, :notice => 'Error recording vote.') }
+      end
+      
+    end
+  end
+
 end

@@ -9,6 +9,10 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
   </tr>
 
 <% @links.each do |link| %>
@@ -20,6 +24,10 @@
     <td><%= link_to 'Show', link %></td>
     <td><%= link_to 'Edit', edit_link_path(link) %></td>
     <td><%= link_to 'Destroy', link, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td></td>
+		<td><%= link.votes.sum(:score) %></td>
+		<td><%= link_to 'Vote Up', upvote_link_path(link), :method => :put %></td>
+		<td><%= link_to 'Vote Down', downvote_link_path(link), :method => :put %></td>
   </tr>
 <% end %>
 </table>
