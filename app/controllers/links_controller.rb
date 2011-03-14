@@ -3,7 +3,10 @@ class LinksController < ApplicationController
   # GET /links.xml
 before_filter :authenticate_user!, :except => [:index, :show]
   def index
-    @links = Link.all
+    @links = Link.find(:all, 
+											:joins => 'LEFT JOIN votes on votes.link_id = links.id',
+                      :group => 'links.id, links.url, links.title, links.created_at, links.updated_at, links.user_id',
+                      :order => 'SUM(COALESCE(votes.score, 0)) DESC')
 
     respond_to do |format|
       format.html # index.html.erb
